@@ -6,9 +6,13 @@ export class CreateTicketDto {
   @IsString()
   title: string;
 
+  @IsNotEmpty()
+  @IsString()
+  messageContent: string;
+
   @IsOptional()
   @IsString()
-  description: string;
+  description?: string;
 
   @IsOptional()
   @IsEnum(TicketPriority)

@@ -1,19 +1,30 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { BullModule } from '@nestjs/bull';
 import { TicketsModule } from './tickets/tickets.module';
 import { Ticket } from './tickets/ticket.entity';
 import { Message } from './tickets/message.entity';
 
 @Module({
   imports: [
-    // 1. Đọc file .env ở thư mục gốc ngoài cùng
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '../.env',
     }),
     
-    // 2. Cấu hình TypeORM kết nối PostgreSQL
+    // Cấu hình Redis cho BullMQ
+    BullModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        redis: {
+          host: configService.get<string>('REDIS_HOST', 'localhost'),
+          port: configService.get<number>('REDIS_PORT', 6379),
+        },
+      }),
+    }),
+    
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -25,7 +36,7 @@ import { Message } from './tickets/message.entity';
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_NAME'),
         entities: [Ticket, Message],
-        synchronize: true, // Chỉ dùng khi DEV, TypeORM sẽ tự tạo/sửa bảng dựa trên Entity
+        synchronize: true,
       }),
     }),
     
