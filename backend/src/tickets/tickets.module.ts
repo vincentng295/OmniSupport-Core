@@ -5,6 +5,8 @@ import { TicketsService } from './tickets.service';
 import { TicketsController } from './tickets.controller';
 import { Ticket } from './ticket.entity';
 import { Message } from './message.entity';
+import { AiModule } from '../ai/ai.module';
+import { TicketProcessor } from './ticket.processor';
 
 @Module({
   imports: [
@@ -12,8 +14,9 @@ import { Message } from './message.entity';
     BullModule.registerQueue({
       name: 'ticket-routing',
     }),
+    AiModule,
   ],
   controllers: [TicketsController],
-  providers: [TicketsService],
+  providers: [TicketsService, TicketProcessor],
 })
 export class TicketsModule {}

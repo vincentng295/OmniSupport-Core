@@ -5,6 +5,7 @@ import { BullModule } from '@nestjs/bull';
 import { TicketsModule } from './tickets/tickets.module';
 import { Ticket } from './tickets/ticket.entity';
 import { Message } from './tickets/message.entity';
+import { AiModule } from './ai/ai.module';
 
 @Module({
   imports: [
@@ -41,6 +42,8 @@ import { Message } from './tickets/message.entity';
     }),
     
     TicketsModule,
+    
+    AiModule,
   ],
 })
 export class AppModule {}
