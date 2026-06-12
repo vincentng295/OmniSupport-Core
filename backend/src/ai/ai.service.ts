@@ -43,7 +43,9 @@ export class AiService {
 
   async generateAutoReply(ticketTitle: string, customerContent: string): Promise<string> {
     try {
-      const model = this.ai.getGenerativeModel({ model: 'gemma-4-26b-a4b-it' });
+      const model = this.ai.getGenerativeModel({ 
+        model: 'gemma-4-26b-a4b-it' 
+      });
       
       const prompt = `
         You are an elite, empathetic Omnichannel Customer Support AI named "OmniAssistant". 
@@ -55,7 +57,16 @@ export class AiService {
         Do not include any placeholders, markdown, or metadata in your response.
       `;
 
-      const result = await model.generateContent(prompt);
+      const result = await model.generateContent({
+        contents: [{ role: 'user', parts: [{ text: prompt }] }],
+        generationConfig: {
+          // Tắt tính năng show thought output của dòng Gemini 3
+          thinkingConfig: {
+            thinkingBudget: 0, 
+          },
+        } as any
+      });
+
       return result.response.text().trim();
     } catch (error) {
       console.error('❌ AI Auto-Reply Error:', error);
