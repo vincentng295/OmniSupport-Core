@@ -18,7 +18,7 @@ export class AiService {
   async classifyTicket(title: string, content: string): Promise<string> {
     try {
       // Gọi model gemini-1.5-flash
-      const model = this.ai.getGenerativeModel({ model: 'gemini-3.0-flash' });
+      const model = this.ai.getGenerativeModel({ model: 'gemma-4-26b-a4b-it' });
       
       const prompt = `
         You are an advanced Customer Support AI. Analyze the following customer ticket:
@@ -43,7 +43,7 @@ export class AiService {
 
   async generateAutoReply(ticketTitle: string, customerContent: string): Promise<string> {
     try {
-      const model = this.ai.getGenerativeModel({ model: 'gemini-3.0-flash' });
+      const model = this.ai.getGenerativeModel({ model: 'gemma-4-26b-a4b-it' });
       
       const prompt = `
         You are an elite, empathetic Omnichannel Customer Support AI named "OmniAssistant". 
