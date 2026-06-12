@@ -40,4 +40,26 @@ export class AiService {
       return 'Inquiry';
     }
   }
+
+  async generateAutoReply(ticketTitle: string, customerContent: string): Promise<string> {
+    try {
+      const model = this.ai.getGenerativeModel({ model: 'gemini-3.0-flash' });
+      
+      const prompt = `
+        You are an elite, empathetic Omnichannel Customer Support AI named "OmniAssistant". 
+        The customer opened a ticket titled: "${ticketTitle}".
+        They said: "${customerContent}"
+
+        Provide a short, helpful, and professional response in Vietnamese (under 3 sentences). 
+        Acknowledge their issue, tell them an agent is being routed, and give a brief comforting closing.
+        Do not include any placeholders, markdown, or metadata in your response.
+      `;
+
+      const result = await model.generateContent(prompt);
+      return result.response.text().trim();
+    } catch (error) {
+      console.error('❌ AI Auto-Reply Error:', error);
+      return 'Cảm ơn bạn đã liên hệ. Hệ thống đang điều phối nhân viên hỗ trợ bạn ngay trong giây lát!';
+    }
+  }
 }
