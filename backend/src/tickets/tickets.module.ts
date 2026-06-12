@@ -7,6 +7,7 @@ import { Ticket } from './ticket.entity';
 import { Message } from './message.entity';
 import { AiModule } from '../ai/ai.module';
 import { TicketProcessor } from './ticket.processor';
+import { TicketsGateway } from './tickets.gateway';
 
 @Module({
   imports: [
@@ -17,6 +18,6 @@ import { TicketProcessor } from './ticket.processor';
     AiModule,
   ],
   controllers: [TicketsController],
-  providers: [TicketsService, TicketProcessor],
+  providers: [TicketsService, TicketProcessor, TicketsGateway],
 })
 export class TicketsModule {}
